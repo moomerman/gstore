@@ -26,15 +26,27 @@ client.list_buckets
 
 Here are some example bucket operations:
 
-<pre><code>client.create_bucket('my_unique_bucket')
+<pre><code># Create a Bucket
+client.create_bucket('my_unique_bucket')
+
+# Retrieve a Bucket
 client.get_bucket('my_unique_bucket')
+
+# Delete a [empty] Bucket
 client.delete_bucket('my_unique_bucket')
 </code></pre>
 
 Once you have a bucket you can manipulate objects in the following way:
 
-<pre><code>client.put_object('my_unique_bucket', 'my_first_object', :data => File.read('mytext.txt'))
-puts client.get_object('my_unique_bucket', 'my_first_object') # returns the contents of the object
-client.get_object('my_unique_bucket', 'my_first_object', :outfile => 'retrieved_mytext.txt') # saves the contents in specified file
+<pre><code># Store a file in a bucket
+client.put_object('my_unique_bucket', 'my_first_object', :data => File.read('mytext.txt'))
+
+# Retrieve the contents of the object in the specified bucket
+puts client.get_object('my_unique_bucket', 'my_first_object')
+
+# Alternatively specify an outfile and the contents will be saved to there
+client.get_object('my_unique_bucket', 'my_first_object', :outfile => 'retrieved_mytext.txt')
+
+# Delete an object from the bucket
 client.delete_object('my_unique_bucket', 'my_first_object')
 </code></pre>
