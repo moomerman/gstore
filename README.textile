@@ -21,6 +21,7 @@ Create an instance of the client with your credentials:
    :secret_key => 'YOUR_SECRET_KEY'
 )
 
+# List all of your existing Buckets
 client.list_buckets
 </code></pre>
 
