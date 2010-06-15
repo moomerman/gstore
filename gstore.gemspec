@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       #s.add_runtime_dependency(%q<oauth>, [">= 0.3.6"])
       #s.add_development_dependency dep
-      end
     else
       #s.add_dependency(%q<oauth>, [">= 0.3.6"])
     end
