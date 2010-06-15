@@ -1,0 +1,40 @@
+h1. Ruby client library for the Google Storage API
+
+This is the first release and supports all the basic operations.  Advanced support for ACLs etc.. coming soon
+
+h2. Install the gem
+
+sudo gem install gstore
+
+h2. Using the gem
+
+Visit "The Google Storage Key Manager":https://sandbox.google.com/storage/m/manage to get your access and secret keys.
+
+In your code just: <code>require 'gstore'</code>
+
+h2. Example
+
+Create an instance of the client with your credentials:
+
+<pre><code>client = GStore::Client.new(
+   :access_key => 'YOUR_ACCESS_KEY',
+   :secret_key => 'YOUR_SECRET_KEY'
+)
+
+client.list_buckets
+</code></pre>
+
+Here are some example bucket operations:
+
+<pre><code>client.create_bucket('my_unique_bucket')
+client.get_bucket('my_unique_bucket')
+client.delete_bucket('my_unique_bucket')
+</code></pre>
+
+Once you have a bucket you can manipulate objects in the following way:
+
+<pre><code>client.put_object('my_unique_bucket', 'my_first_object', :data => File.read('mytext.txt'))
+puts client.get_object('my_unique_bucket', 'my_first_object') # returns the contents of the object
+client.get_object('my_unique_bucket', 'my_first_object', :outfile => 'retrieved_mytext.txt') # saves the contents in specified file
+client.delete_object('my_unique_bucket', 'my_first_object')
+</code></pre>
