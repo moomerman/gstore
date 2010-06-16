@@ -36,6 +36,7 @@ module GStore
         params = options.delete(:params) || {}
         headers = options.delete(:headers) || {}
         params[:"max-keys"] = params.delete(:max_keys) if params and params[:max_keys]
+        headers[:"x-goog-acl"] = headers.delete(:x_goog_acl) if headers and headers[:x_goog_acl]
         signed_request(method, host, path, params, headers, options)
       end
       

@@ -22,17 +22,19 @@ module GStore
         puts
       end
       
-      headers = {
+      headers.merge!({
         :Host => host,
-        :Date => Time.now.utc.strftime('%a, %d %b %Y %H:%M:%S -0000'),
-        :"Content-Type" => 'text/plain',
+        :Date => Time.now.utc.strftime('%a, %d %b %Y %H:%M:%S -0000')
         #:"Content-MD5" => ''
-      }
+      })
+      
       if options[:data]
         headers = headers.merge(:"Content-Length" => options[:data].size)
       else
         headers = headers.merge(:"Content-Length" => 0) 
       end
+      headers[:"Content-Type"] ||= 'text/plain'
+      
       
       bucket = nil
       if host =~ /(\S+).#{@host}/
@@ -43,11 +45,16 @@ module GStore
         '' + "\n" + # Content-MD5
         headers[:"Content-Type"] + "\n" + # Content-Type
         headers[:Date] + "\n" # Date
+      headers.each do |key,value|
+        if key.to_s =~ /^x-goog/
+          canonical_headers += "#{key}:#{value}\n"
+        end
+      end
       
       canonical_resource = ""
       canonical_resource += "/#{bucket}" if bucket
       canonical_resource += path
-      #canonical_resource += params_to_request_string(params) unless params.empty?
+      canonical_resource += '?acl' if params[:acl]
       
       authorization = 'GOOG1 ' + @access_key + ':' + sign((canonical_headers + canonical_resource).toutf8)
       

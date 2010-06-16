@@ -63,4 +63,20 @@ Here's an example with gstore:
 <pre><code>client.get_bucket('my_unique_bucket', :params => {:max_keys => 2, :prefix => 'backup'})
 </code></pre>
 
-* max_keys is converted to max-keys so you can use the ruby symbol. :"max-keys" also works
+* <code>max_keys</code> is converted to <code>max-keys</code> so you can use the ruby symbol without quotes. <code>:"max-keys"</code> and <code>"max-keys"</code> also work
+
+h3. Access Control
+
+Here is how you retrieve the ACL for a bucket or object:
+
+<pre><code>client.get_bucket('my_unique_bucket', :params => {:acl => ''})
+client.get_bucket('my_unique_bucket', 'my_first_object', :params => {:acl => ''})
+</pre></code>
+
+To create a bucket or object with one of the pre-defined ACL's:
+
+<pre><code>client.create_bucket('my_public_bucket', :headers => {:x_goog_acl => 'public-read'})
+client.create_object('my_public_bucket', 'my_public_object', :headers => {:x_goog_acl => 'public-read-write'})
+</code></pre>
+
+* <code>x_goog_acl</code> is converted to <code>x-goog-acl</code> so you can use the ruby symbol without quotes. <code>:"x-goog-acl"</code> and <code>"x-goog-acl"</code> also work
