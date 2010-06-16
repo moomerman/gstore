@@ -12,7 +12,7 @@ Visit "The Google Storage Key Manager":https://sandbox.google.com/storage/m/mana
 
 In your code just: <code>require 'gstore'</code>
 
-h2. Example
+h2. Basic Examples
 
 Create an instance of the client with your credentials:
 
@@ -51,3 +51,16 @@ client.get_object('my_unique_bucket', 'my_first_object', :outfile => 'retrieved_
 # Delete an object from the bucket
 client.delete_object('my_unique_bucket', 'my_first_object')
 </code></pre>
+
+h2. Advanced Examples
+
+h3. Query parameters
+
+For certain requests like <code>get_bucket('my_unique_bucket')</code> you can specify query parameters like <code>max-keys</code>, <code>prefix</code>, <code>delimiter</code> and <code>marker</code> (see "The Google Developer Guide":http://code.google.com/apis/storage/docs/developer-guide.html) for more information.
+
+Here's an example with gstore:
+
+<pre><code>client.get_bucket('my_unique_bucket', :params => {:max_keys => 2, :prefix => 'backup'})
+</code></pre>
+
+* max_keys is converted to max-keys so you can use the ruby symbol. :"max-keys" also works

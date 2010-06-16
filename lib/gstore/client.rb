@@ -14,26 +14,29 @@ module GStore
 
     private
       
-      def get(bucket, path, params={}, options={})
-        _http_request(Net::HTTP::Get, bucket, path, params, options)
+      def get(bucket, path, options={})
+        _http_request(Net::HTTP::Get, bucket, path, options)
       end
       
-      def put(bucket, path, params={}, options={})
-        _http_request(Net::HTTP::Put, bucket, path, params, options)
+      def put(bucket, path, options={})
+        _http_request(Net::HTTP::Put, bucket, path, options)
       end
       
-      def delete(bucket, path, params={}, options={})
-        _http_request(Net::HTTP::Delete, bucket, path, params, options)
+      def delete(bucket, path, options={})
+        _http_request(Net::HTTP::Delete, bucket, path, options)
       end
       
-      def head(bucket, path, params={}, options={})
-        _http_request(Net::HTTP::Head, bucket, path, params, options)
+      def head(bucket, path, options={})
+        _http_request(Net::HTTP::Head, bucket, path, options)
       end
       
-      def _http_request(method, bucket, path, params, options={})
+      def _http_request(method, bucket, path, options={})
         host = @host
         host = "#{bucket}.#{@host}" if bucket
-        signed_request(method, host, path, params, options)
+        params = options.delete(:params) || {}
+        headers = options.delete(:headers) || {}
+        params[:"max-keys"] = params.delete(:max_keys) if params and params[:max_keys]
+        signed_request(method, host, path, params, headers, options)
       end
       
   end

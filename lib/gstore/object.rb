@@ -1,7 +1,7 @@
 module GStore
   class Client
-    def put_object(bucket, filename, data, options={})
-      put(bucket, "/#{filename}", options, data)
+    def put_object(bucket, filename, options={})
+      put(bucket, "/#{filename}", options)
     end
     
     def get_object(bucket, filename, options={})

@@ -9,7 +9,7 @@ require 'cgi'
 module GStore
   class Client
     
-    def signed_request(method, host, path, params={}, options={})
+    def signed_request(method, host, path, params={}, headers={}, options={})
       
       if @debug
         puts
@@ -17,6 +17,7 @@ module GStore
         puts "***** HOST: #{host}"
         puts "***** PATH: #{path}"
         puts "***** PARAMS: #{params.inspect}"
+        puts "***** HEADERS: #{headers.inspect}"
         puts "***** OPTIONS: #{options.inspect}"
         puts
       end
@@ -46,6 +47,7 @@ module GStore
       canonical_resource = ""
       canonical_resource += "/#{bucket}" if bucket
       canonical_resource += path
+      #canonical_resource += params_to_request_string(params) unless params.empty?
       
       authorization = 'GOOG1 ' + @access_key + ':' + sign((canonical_headers + canonical_resource).toutf8)
       
@@ -71,15 +73,17 @@ module GStore
       def _http_do(method, host, path, params, headers, data=nil)
         http = Net::HTTP.new(host, 443)
         http.use_ssl = true
+        http.set_debug_output $stderr if @debug
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE 
         
         http.start do
-          req = method.new(path)
+          req = method.new(path + params)
           req.content_type = 'application/x-www-form-urlencoded'
           req['User-Agent'] = "moomerman-gstore-gem"
           headers.each do |key, value|
             req[key.to_s] = value
           end
-          
+                    
           response = http.request(req, data)
 
           return response.body
@@ -87,12 +91,13 @@ module GStore
       end
       
       def params_to_request_string(params)
+        return "" if params.empty?
         sorted_params = params.sort {|x,y| x[0].to_s <=> y[0].to_s}
         escaped_params = sorted_params.collect do |p|
           encoded = (CGI::escape(p[0].to_s) + "=" + CGI::escape(p[1].to_s))
           encoded.gsub('+', '%20')
         end
-        escaped_params.join('&')
+        "?#{escaped_params.join('&')}"
       end
   end
 end
