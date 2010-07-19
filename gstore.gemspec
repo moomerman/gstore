@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{gstore}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Richard Taylor"]
-  s.date = %q{2010-06-16}
+  s.date = %q{2010-07-19}
   s.description = %q{gstore is a Ruby client library for the Google Storage API.}
   s.email = %q{moomerman@gmail.com}
   s.files = ["LICENSE", "README.textile","lib/gstore.rb"] + Dir.glob('lib/gstore/*.rb')
